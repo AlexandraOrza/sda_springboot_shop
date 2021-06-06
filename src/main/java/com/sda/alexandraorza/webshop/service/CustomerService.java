@@ -8,16 +8,18 @@ import java.util.List;
 
 @Service
 public class CustomerService {
-      private final AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-      // injected by Spring to the constructor
+    // injected by Spring to the constructor
     public CustomerService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
-    public void addCustomer(Account account){
+
+    public void addCustomer(Account account) {
         accountRepository.save(account);
     }
-    public List<Account> getCustomerAccounts(){
-        return accountRepository.getAll();
+
+    public Iterable<Account> getCustomerAccounts() {
+        return accountRepository.findAll();
     }
 }
