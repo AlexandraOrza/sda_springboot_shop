@@ -33,7 +33,7 @@ public class MailService {
         message.setFrom(new InternetAddress(from));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
         message.setSubject(subject);
-        
+
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         mimeBodyPart.setContent(content, "text/html");
         Multipart multipart = new MimeMultipart();
