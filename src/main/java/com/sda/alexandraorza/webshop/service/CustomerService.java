@@ -14,20 +14,19 @@ public class CustomerService {
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
 
-    // injected by Spring to the constructor
+    // injected by Spring to the constructor(@Autowired)
     public CustomerService(AccountRepository accountRepository, CustomerRepository customerRepository) {
         this.accountRepository = accountRepository;
         this.customerRepository = customerRepository;
     }
-
     @Transactional
     public void addCustomer(Account account, Customer customer) {
 
         accountRepository.save(account);
         customerRepository.save(customer);
     }
-
     public Iterable<Account> getCustomerAccounts() {
+
         return accountRepository.findAll();
     }
 }
