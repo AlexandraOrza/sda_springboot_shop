@@ -15,17 +15,20 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class ProductService {
+
     private final ProductRepository productRepository;
 
     @Autowired
+
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-    //Adnotarea de Transactional va face transcrierea in baza de date
-    @Transactional
-    public void save(Product product){
-        productRepository.save(product);
 
+    @Transactional   //Adnotarea de Transactional va face transcrierea in baza de date
+
+    public void save(Product product){
+
+        productRepository.save(product);
     }
     public List<Product> findAll(){
      //  return new ArrayList<Product>((Collection<? extends Product>) productRepository.findAll());
@@ -40,8 +43,8 @@ public class ProductService {
         Optional<Product> product = productRepository.findById(id);
         if(product.isPresent()){
             productRepository.delete(product.get());
-        }else{
-            throw new IllegalArgumentException("Product not found!");
+        } else{
+            throw new IllegalArgumentException("Product not found");
         }
     }
 }

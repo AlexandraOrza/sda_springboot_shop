@@ -1,6 +1,5 @@
 package com.sda.alexandraorza.webshop.thcontroller;
 
-import javax.validation.Valid;
 import com.sda.alexandraorza.webshop.model.Product;
 import com.sda.alexandraorza.webshop.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -10,43 +9,47 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 public class ProductController {
+
     private final ProductService productService;
 
-    public ProductController(ProductService productService){
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
-    @GetMapping("/")
-    public String showProductsPage(Model model){
+
+    @GetMapping("/products")
+    public String showProductsPage(Model model) {
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
-
         return "products";
     }
+
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable(value= "id") Long id, Model model){
+    public String deleteProduct(@PathVariable(value = "id") Long id, Model model) {
         productService.delete(id);
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
-
         return "products";
     }
+
     @GetMapping("/add-product")
-    public String showAddProductPage(Product product){
+    public String showAddProductPage(Product product) {
         return "add-product";
     }
+
     @PostMapping("/add-product")
-    public String addProduct(@Valid Product product, BindingResult result, Model model){
+    public String addProduct(@Valid Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "add-product";
         } else {
             productService.save(product);
         }
         List<Product> products = productService.findAll();
-        model.addAttribute("products",products);
+        model.addAttribute("products", products);
         return "products";
     }
 }

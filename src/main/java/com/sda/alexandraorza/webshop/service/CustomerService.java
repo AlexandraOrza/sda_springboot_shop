@@ -21,12 +21,11 @@ public class CustomerService {
     }
     @Transactional
     public void addCustomer(Account account, Customer customer) {
-
         accountRepository.save(account);
         customerRepository.save(customer);
     }
-    public Iterable<Account> getCustomerAccounts() {
 
+    public Iterable<Account> getCustomerAccounts() {
         return accountRepository.findAll();
     }
 }
