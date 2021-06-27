@@ -1,0 +1,86 @@
+package com.sda.alexandraorza.webshop.controller;
+
+import com.sda.alexandraorza.webshop.model.Account;
+import com.sda.alexandraorza.webshop.service.AccountService;
+import com.sda.alexandraorza.webshop.service.dto.UserRegistrationDTO;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+public class AccountController {
+
+    private final AccountService accountService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public AccountController(AccountService accountService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.accountService = accountService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @PostMapping("/account/create")
+    public ResponseEntity<String> createAccount(@RequestBody Account account) {
+        if (accountService.accountExist(account.getLogin())) {
+            return ResponseEntity.badRequest().build();
+        }
+        accountService.createAccount(account);
+        return ResponseEntity.ok("Account created!");
+    }
+
+    @PostMapping("/user/register")
+    @CrossOrigin
+    public ResponseEntity<Account> registerAccount(@RequestBody @Valid UserRegistrationDTO userDTO) {
+        if (accountService.accountExist(userDTO.getLogin())) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Account account = new Account();
+            account.setLogin(userDTO.getLogin());
+            account.setPassword(userDTO.getPassword());
+            account.setBillingAddress(userDTO.getEmail());
+            account.setCreationDate(new Date());
+            account.setClosed(false);
+            account.setClosedDate(new Date());
+            accountService.createAccount(account);
+
+            return ResponseEntity.ok(account);
+        }
+    }
+
+
+    @GetMapping("/accounts")
+    public List<Account> getAllProducts() {
+        return accountService.findAll();
+    }
+
+    @PostMapping("/login")
+    @CrossOrigin
+    public Boolean login(@RequestBody Account account) {
+        UserDetails userDetails = accountService.loadUserByUsername(account.getLogin());
+        if (userDetails != null &&
+                bCryptPasswordEncoder.matches(
+                        userDetails.getPassword(),
+                        bCryptPasswordEncoder.encode(account.getPassword()))) {
+            return true;
+        }
+        // TO BE FIXED
+        return true;
+    }
+
+    @PostMapping("/user")
+    @CrossOrigin
+    public Principal user(HttpServletRequest request) {
+        String authToken = request.getHeader("Authorization").substring("Basic".length()).trim();
+        return () -> new String(Base64.getDecoder().decode(authToken)).split(":")[0];
+    }
+
+
+}

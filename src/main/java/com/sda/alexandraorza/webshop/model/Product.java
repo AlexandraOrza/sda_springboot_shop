@@ -1,22 +1,37 @@
 package com.sda.alexandraorza.webshop.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
-@Table(name="product")
+@Table(name = "product")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NotBlank
+    @Size(min = 5, max = 100)
     @Column(name = "name")
     private String name;
+
+    @NotBlank
+    @Size(min = 5,max = 15000)
     @Column(name = "description")
     private String description;
+
+    @Positive
     @Column(name = "price")
     private Double price;
+
+    @NotBlank
+    @Pattern(regexp = "[A-Z][A-Z][A-Z]")
     @Column(name = "currency")
     private String currency;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
     private ProductCategory category;
@@ -28,8 +43,8 @@ public class Product {
         this.currency = currency;
         this.category = category;
     }
-    public Product(){
 
+    public Product() {
     }
 
     public Long getId() {
@@ -56,7 +71,7 @@ public class Product {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 

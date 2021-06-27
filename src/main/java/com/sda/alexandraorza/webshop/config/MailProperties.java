@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "mail.smtp")
+@ConfigurationProperties(prefix="mail.smtp")
 public class MailProperties {
     private String username;
     private String password;

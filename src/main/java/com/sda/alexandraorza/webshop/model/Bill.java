@@ -2,7 +2,6 @@ package com.sda.alexandraorza.webshop.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-
 @Entity
 @Table(name = "bill")
 public class Bill {
@@ -10,9 +9,9 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "issue_Date")
+    @Column(name = "issue_date")
     private Timestamp issueDate;
-    @Column(name = "due_Date")
+    @Column(name = "due_date")
     private Timestamp dueDate;
     @Column(name = "amount")
     private Double amount;
@@ -27,7 +26,6 @@ public class Bill {
     }
 
     public Bill() {
-
     }
 
     public Long getId() {

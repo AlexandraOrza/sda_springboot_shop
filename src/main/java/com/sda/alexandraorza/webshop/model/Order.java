@@ -1,14 +1,12 @@
 package com.sda.alexandraorza.webshop.model;
 
 import javax.persistence.*;
-
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "oder")
+@Table(name = "order_product")
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -17,16 +15,21 @@ public class Order {
     private OrderStatus status;
     @Column(name = "creation_date")
     private Timestamp creationDate;
+
     @OneToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
     @OneToOne
     @JoinColumn(name = "bill_id")
     private Bill bill;
+
     @ManyToMany
     @JoinTable(name = "order_products",
-            joinColumns = {@JoinColumn(name = "oder_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")})
+            joinColumns = {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_id")}
+    )
+
     private List<Product> products;
 
     public Order(OrderStatus status, Timestamp creationDate, Customer customer, Bill bill) {
@@ -35,9 +38,10 @@ public class Order {
         this.customer = customer;
         this.bill = bill;
     }
-    public Order(){
 
+    public Order() {
     }
+
     public Long getId() {
         return id;
     }
